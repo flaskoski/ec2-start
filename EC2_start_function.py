@@ -31,15 +31,8 @@ def main(event, context):
         LOGGER.exception(error)
 
 def startEC2():
-    response = EC2CLIENT.describe_instance_status(InstanceIds=[INSTANCE_ID])
-    instance_status = response['InstanceStatuses'][0]['InstanceStatus']['Status']
-    system_status = response['InstanceStatuses'][0]['SystemStatus']['Status']
-
-    if instance_status == 'initializing' or system_status == 'initializing':
-        LOGGER.info('Aborts. Currently InstanceStatus Checking')
-        return
     #check if instance is currently in the stopped state
-    elif EC2INSTANCE.state['Name'] == 'stopped':
+    if EC2INSTANCE.state['Name'] == 'stopped':
         EC2INSTANCE.start()
         LOGGER.info('Start InstanceID： ' + INSTANCE_ID)
         #wait for the EC2 instance to go to running state
