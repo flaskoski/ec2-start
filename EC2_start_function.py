@@ -35,17 +35,6 @@ def startEC2():
     if EC2INSTANCE.state['Name'] == 'stopped':
         EC2INSTANCE.start()
         LOGGER.info('Start InstanceID： ' + INSTANCE_ID)
-        #wait for the EC2 instance to go to running state
-        EC2CLIENT.get_waiter('instance_running').wait(
-            InstanceIds=[
-                INSTANCE_ID
-            ],
-            WaiterConfig={
-                'Delay': 5,  # Default: 15
-                'MaxAttempts': 20  # Default: 40
-            }
-        )
-        LOGGER.info("Completed!")
         return
     else:
         LOGGER.info('InstanceID "' + INSTANCE_ID + '" is not stopped!')
